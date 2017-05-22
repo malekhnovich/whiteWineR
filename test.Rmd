@@ -35,48 +35,63 @@ sulphateBar  = sulphateBar+xlim(0.40,1.0)+ggtitle("Sulphate Distribution")
 
 #lets try seeing another distribution of the alcohol values
 alcoholBar =  ggplot(data  =redInfo,aes( x  = redInfo$alcohol,
-                            fill = redInfo$quality))+geom_bar(color = 'yellow')+
+                            fill = redInfo$quality))+geom_bar(binwidth = 0.2,
+                                                              color = 'yellow')+
 ggtitle("alcohol distribution")+xlim(9,13)+xlab("alcohol level")
 
 #lets try a boxplot to get a different kind of a graph  graphing the quality based on the residual sugar
 #setting the xlim to remove outliers too far to the right
 residualSugarBar = ggplot(data = redInfo, aes(x = redInfo$residual.sugar))+
-geom_bar(color = "red")+xlim(0,8)+xlab("residual Sugar")+ggtitle("Residual Sugar Distribution")
+geom_bar(binwidth = 0.2,color = "red")+
+  xlim(0,8)+
+  xlab("residual Sugar")+
+  ggtitle("Residual Sugar Distribution")
 
 #citric acid distribution
 #adjusting xlim to remove outliers, made it blue just to distinguish easier
 citricAcidBar = ggplot(data = redInfo, aes(x = redInfo$citric.acid))+
-geom_bar(color = "blue")+xlim(0,0.75)+xlab("citric acid level")+
+geom_bar(color = "blue")+
+  xlim(0,0.75)+
+  xlab("citric acid level")+
 ggtitle("Citric Acid Distribution")
 
 #fixed acid distribution
 fixedAcidBar = ggplot(data = redInfo,aes(x = redInfo$fixed.acidity))+
-geom_bar(color = "orange")+xlim(5,13)+xlab("fixed acidity level")+
+geom_bar(binwidth =0.2 ,color = "orange")+
+  xlim(5,13)+
+  xlab("fixed acidity level")+
 ggtitle("fixed acidity level")
 
 #volatile acid distribution
 volatileAcidBar = ggplot(data = redInfo, aes(x = redInfo$volatile.acidity))+
-geom_bar(color = "orange")+xlab("volatile acidity level")+
+geom_bar(binwidth = 0.05,color = "orange")+
+  xlab("volatile acidity level")+
+  xlim(0.2,1.2)+
 ggtitle("Volatile Acid Distribution")
 
 #total sulfer dioxide distribution
 totalSulferBar = ggplot(data =redInfo,aes(x = redInfo$total.sulfur.dioxide))+
-geom_bar(color = "pink")+xlab("Sulfer Dioxide Levels")+ xlim(0,150)+
+geom_bar(binwidth =5, color = "pink")+
+  xlab("Sulfer Dioxide Levels")+ xlim(10,150)+
 ggtitle("Total Sulfer Dioxide Distribution")
 
 #free sulfer dioxide distribution
 freeSulferBar = ggplot(data =redInfo, aes(x = redInfo$free.sulfur.dioxide))+
-geom_bar(color = "purple")+xlab("Free Sulfer Dioxide Levels")+ xlim(0,45)+
+geom_bar(binwidth = 1.25,color = "purple")+
+  xlab("Free Sulfer Dioxide Levels")+ xlim(0,40)+
 ggtitle("Free Sulfer Dioxide Distribution")
 
 #chlorides distribution
 chloridesBar = ggplot(data = redInfo,aes(x = redInfo$chlorides))+
-geom_bar(color="green")+xlab("Chlorides Level")+xlim(0.025,0.125)+
+geom_bar(color="green")+
+  xlab("Chlorides Level")+xlim(0.03,0.125)+
 ggtitle("Chlorides Distribution")
 
-#density distribution
+#chlorides distribution
 densityBar = ggplot(data = redInfo,aes(x = redInfo$density))+
-geom_bar(color ="red")+xlab("Density Level")+xlim(0.992,1.00)+
+geom_bar(binwidth = 0.0005,color="green")+
+  
+  xlab("Chlorides Level")+
 ggtitle("Density Distribution")
 
 alcoholBar
@@ -89,8 +104,11 @@ totalSulferBar
 freeSulferBar
 chloridesBar
 densityBar
+
 ```
-General Distributions
+
+##General Distributions
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(gridExtra)
 library(ggplot2)
@@ -109,10 +127,14 @@ grid.arrange(ggplot(data = redInfo,aes(x = 1,
 
 
 ```
+
+##Description
+
 The graph on the left shows the distribution of fixed acidity. The median 
 is approximately eight and there is a singificant number of outliers both above
 and below the  mean. The bar graph on the right shows the same distribution just 
-in another format that 
+in another format
+
 ```{r}
 #similar graph to the one above but with volatile acidity
 grid.arrange(ggplot(data = redInfo,aes(x = 1, 
@@ -144,7 +166,9 @@ grid.arrange(ggplot(data = redInfo,aes(x = 1,
 
 
 ```
-Single Variable analysis of volatile acidity and chloride distribution
+
+##Single Variable analysis of volatile acidity and chloride distribution
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #summary(redInfo)
 levels(redInfo$pH)
@@ -235,6 +259,7 @@ grid.arrange(lowPhResidualChlorides,mediumPhResidualChlorides,highPhResidualChlo
 Fixed Acididty levels for wines of the highest quality have a specific range
 between 6 and eight. This is not true of wines of lesser qualities as they can
 have a wider range of fixed acidity. 
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 lowPhcitricTotal = ggplot(data = lowPH, aes(x = lowPH$citric.acid, 
                                             y = lowPH$total.sulfur.dioxide), 
@@ -276,6 +301,7 @@ grid.arrange(lowPhcitricTotal,mediumPhcitricTotal,highPhcitricTotal)
 grid.arrange(lowPhcitricTotal,mediumPhcitricTotal,highPhcitricTotal)
 
 ```
+
 The first graph shows that the majority of wines with a high level of pH have very 
 little to no citric acid and also the majority have a total sulfer dioxide
 level under 80.White wines with medium pH are scattered. Wines with low pH 
@@ -287,6 +313,7 @@ The second graph shows that there is not a significant relationship between pH
 and quality of wines as wines of the highest quality appear in all three graphs. 
 The citric acid quanitity for high/medium pH wines is lower than the citric 
 acid level for low pH wines with few outliers. 
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(gridExtra)
 
@@ -298,17 +325,19 @@ alcoholResidualQuality =ggplot(aes(x = redInfo$alcohol,
                            color = factor(quality)),
        data = redInfo)+
          geom_point(alpha = 0.8, size = 1)+
+         coord_cartesian(ylim=c(0,7))+
          geom_smooth(method = "lm", se = FALSE, size = 1)+
          scale_color_brewer(type='seq',
-                            palette = "Set1",
                             guide = guide_legend(title = 'Quality'))
 
 alcoholResidualQuality = alcoholResidualQuality+
   labs(title = 
  "How Alcohol and Residual Sugar Affect Quality",
+ 
 subtitle = "Alcohol VS Sugar",
   x = "Alcohol Level",
-y = "Residual Sugar Level")
+y = "Residual Sugar Level")+
+  theme_dark()
 
 
 #trying to depict if there is a trend between alcohol and residual sugar based on the quality of the wine
@@ -323,6 +352,7 @@ in the alchol and residual sugars. The average quality wines don't have a signif
 increase in residual sugar levels, but do have a more varied level of alcohol. 
 There is a slight increase in alcohol and residual sugar levels for the wines 
 of the highest quality. 
+
 ```{r}
 
 #lets get some stats on the density variable
@@ -356,7 +386,8 @@ ggplot(data = redInfo, aes(x = redInfo$density, y = redInfo$total.sulfur.dioxide
    labs(title = "Density VS Total Sulfer Dioxide",
 subtitle = "Alcohol",
   x = "Density Level",
-y = "Total Sulfer Dioxide")
+y = "Total Sulfer Dioxide")+
+  labs(color= "Free Sulfer Dioxide")
  
  
 
@@ -377,7 +408,8 @@ ggplot(data = redInfo, aes(x = redInfo$citric.acid,
   geom_point()+facet_wrap(~redInfo$quality)+
   labs(title = "Citric Acid VS Residual Sugar",
        x = "Citric Acid Level",
-       y = "Residual Sugar Level")
+       y = "Residual Sugar Level")+
+  labs(color = "alcohol")
   
 #graph demonstrates that the quality of the wine is in a particular range in both residual sugar as well as alcohol
 #really poor quality wines also have either extremely low citric acid or alot of citric acid based on the graph
@@ -419,8 +451,8 @@ ggplot(redInfo, aes(x =redInfo$quality,
        x = "Quality",
        y = "Residual Sugar Level")+
   geom_boxplot(fill = 'purple', colour = 'orange', alpha = 0.7)+
-  
-  scale_y_continuous(name = 'residual sugar', breaks = seq(2,10,.5))
+  coord_cartesian(ylim=c(2,4))+
+  scale_y_continuous(name = 'residual sugar', breaks = seq(2,4,.25))
 #interesting to note that there are very fewer outliers below Q1
 #also after adjusting the breaks, it is easy to see that wines of a higher quality on average have a residual sugar between 2.5 and 3
 
@@ -430,7 +462,7 @@ ggplot(redInfo, aes(x =redInfo$quality,
 ggplot(redInfo, aes(x =redInfo$quality, 
                     y =redInfo$total.sulfur.dioxide))+
   geom_boxplot(fill = 'purple', colour = 'yellow', alpha = 0.7)+
-  
+  coord_cartesian(ylim=c(0,100))+
   labs(title = "Quality VS Total Sulfer Dioxide",
        x = "Quality",
        y = "Residual Sugar Level")+
@@ -441,6 +473,7 @@ ggplot(redInfo, aes(x =redInfo$quality,
 Based on the above graph, it seems that residual sugar alone does not play a significant part in determining the quality of the wine. 
 Analyizing total sulfer dioxide also shows that there isn't a significant trend
 between quality and total sulfer dioxide alone. 
+
 ```{r}
 #want to compare chlorides and alcohol levels while paying attention to the quality
 
@@ -510,8 +543,9 @@ ggplot(redInfo,aes(x=redInfo$pH,
   ggtitle("pH in relation to alcohol content ")
 summary(redInfo$alcohol)
 ```
-FINAL PLOTS
-PLOT #1
+##FINAL PLOTS
+
+##PLOT #1
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(ggplot2)
 redInfo <- read.csv('wineQualityReds.csv')
@@ -541,7 +575,7 @@ phByQuality<- phByQuality+scale_y_continuous(name = 'pH levels',
 phByQuality
 
 ```
-PLOT 1 ANALYSIS
+##PLOT 1 ANALYSIS
 
 The console shows the range of both the quality values and the pH values for the
 dataset. 
@@ -551,8 +585,8 @@ improves, the pH level decreases. The pH levels of wines of quality 3 and 4 is
 approximately 3.4. Wines of the highest quality have a median pH of 3.25
 
 
-PLOT2
-```{r}
+##PLOT2
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 #wines of a higher quality have a lower median of pH level. There is also a significantly higher pH for those wines that have the lowest quality (2 & 3). 
 
@@ -564,7 +598,7 @@ citricbyresidual = ggplot(data = redInfo, aes(x = redInfo$citric.acid,
                                               y = redInfo$residual.sugar, 
                                               color = redInfo$alcohol))+
   scale_color_continuous(low = "black",high = "yellow")+
-  geom_point()+
+  geom_point(alpha = 1/5)+
   facet_wrap(~redInfo$quality)+
   xlim(0,0.75)+
   ggtitle("Citric acid level vs Residual Sugar based on Quality")+
@@ -576,7 +610,7 @@ citricbyresidual = ggplot(data = redInfo, aes(x = redInfo$citric.acid,
 citricbyresidual
 #alcohol levels for wines of poor quality are extremely low, wines of quality 3 mostly have a small amount of citric acid and residual sugar. Wines of average quality 5&6 have a larger descrepency in their alcohol levels but the majority have a residual sugar level under 4 and a maximum citric acid level of 0.75. Wines of the highest quality, 7&8, have a low amount of reisudal sugar if their alcohol levels are moderately low. If they have a high alcohol level, they are more likely to also have a higher residual sugar level. The citric acid level of wines of the highest quality is also less than 0.5.  
 ```
-PLOT 2 ANALYSIS
+##PLOT 2 ANALYSIS
 
 The 2nd graph illustrates the citric acid level vs the residual sugar level
 of wines of varying qualities. The lowest quality wines mostly have little to no 
@@ -585,8 +619,8 @@ a higher quality of alcohol and a wider range of residual sugar levels.
 Wines of quality 7&8, the alcohol level is close to the median alcohol level
 of 10.20. 
 
-PLOT 3
-```{r}
+##PLOT 3
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 
 lowPH <-redInfo[which(redInfo$pH<3.211),]
@@ -669,7 +703,7 @@ grid.arrange(lowPhcitricTotal,mediumPhcitricTotal,highPhcitricTotal)
 
 
 ```
-PLOT 3 ANALYSIS
+##PLOT 3 ANALYSIS
 
 The first three numbers show the range and the quartiles for the three subsets 
 made which are low pH, medium pH, and large pH. It's interesting to note that the
@@ -691,7 +725,7 @@ are both trending in the same direction.
 
 
 
-CONCLUSION
+##CONCLUSION
   After analyzing the dataset of 1599 wines based on the 13 variables provided I came to some conclusions.To start, the quality of the wine is heavily impacted by the pH levels of the wine. Wines of lower quality tend to have a higher value of pH in comparison to wines of a higher quality. Also, wines of higher quality tend to not have too much alcohol or too little.They also did not have too much residual sugar Wines that are very poor tend to have a very small amount of alcohol. Wines that have a larger amount of alcohol are most often average.I also observed a positive relationship with pH, citric acid, and total sulfer dioxide. The wines that had a high pH had a citric acid value of zero or close to zero. The citric acid for low pH wines were 0.5 and medium pH wines were less distinct and had a much wider range, on average.
   In conclusion, I learned that wines of higher qualities tend to have a good balance of significant factors such as pH, residual sugar, and alcohol levels. Most often when wines had a significantly high or low value for these specific factors the quality of the wine was not very high. I wished there were more variables that would of analyzed either factors such as price or sales. I think it would have made the project more interesting to examine the different wines at different price points, especially in comparison to the quality of the wines. Also, I had some issues with trying to categorize the data initially with some of the variables considering their ranges were very large. The quality variable was perfect in the sense that it's range was only between three and eight. I overcame this by making other categorical variables such as "lowPH", "mediumPH" and "largePH" variables that I could use to look at different aspects of the data as well. 
 
